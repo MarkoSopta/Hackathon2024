@@ -12,16 +12,39 @@ public class Business {
     private String category;
     private String description;
     private String location;
+    private Double price;
+
+    @Lob
+    private byte[] image;
 
     public Business() {
     }
 
-    public Business(Long id, String name, String category, String description, String location) {
+    public Business(Long id, String name, String category, String description, String location,byte[] image, Double price) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
         this.location = location;
+        this.image = image;
+        this.price = price;
+
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Long getId() {
