@@ -7,7 +7,7 @@
       <nav class="nav-buttons">
         <button @click="routeHomePage"  class="nav-button">Početna</button>
         <button @click="routePostsPage" class="nav-button">Objave</button>
-        <button class="nav-button">Prijava</button>
+        <button @click="routePrijavaPage" class="nav-button">Prijava</button>
         <button class="nav-button">O nama</button>
       </nav>
     </Header>
@@ -22,6 +22,9 @@
     },
     routeHomePage(){
         this.$router.push({ name: 'Home' })
+    },
+    routePrijavaPage(){
+      this.$router.push({ name: 'Prijava' })
     }
   }
   };

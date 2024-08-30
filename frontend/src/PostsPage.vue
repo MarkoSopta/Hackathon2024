@@ -4,29 +4,37 @@
   
       <div class="hero">
         <div class="search-bar">
-          <input type="text" placeholder="Search..." />
+          <input type="text" placeholder="Pretraga..." />
           <button class="search-button">
             <i class="fas fa-search"></i>
           </button>
         </div>
   
         <div class="filters">
-          <select class="dropdown">
-            <option value="" >Kategorija</option>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-          </select>
-  
-          <select class="dropdown">
-            <option value="" >Poredaj po</option>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-          </select>
-        </div>
+      <div class="filter-options">
+        <select class="dropdown">
+          <option value="">Kategorija</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+        </select>
+
+        <select class="dropdown">
+          <option value="">Poredaj po</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+        </select>
+      </div>
+      <router-link to="/dodaj-objavu" class="action-button">Dodaj objavu</router-link>
+    </div>
+       
   
         <div class="cards-container">
-          <div class="card" v-for="(post, index) in posts" :key="index">
-            
+          <router-link
+            v-for="(post, index) in posts"
+            :key="index"
+            :to="{ name: 'Post', params: { post } }"
+            class="card"
+            >                     
             <div class="card-content">
               <h3>{{ post.title }}</h3>
               <p>{{ post.description }}</p>
@@ -35,8 +43,10 @@
             <div v-if="post.image" class="card-image">
               <img :src="post.image" alt="Post Image" />
             </div>
-          </div>
+         
+        </router-link>
         </div>
+        
       </div>
   
       <FooterComponent />
@@ -57,36 +67,42 @@
       return {
         posts: [
           {
+            index: 1,
             title: "Post 1",
             description: "This is the description for post 1.",
             additionalInfo: "Additional info for post 1.",
             image: require('@/assets/hero_img.jpg'),
           },
           {
+            index: 1,
             title: "Post 2",
             description: "This is the description for post 2.",
             additionalInfo: "Additional info for post 2.",
             image: require('@/assets/logo.png'),
           },
           {
+            index: 1,
             title: "Post 2",
             description: "This is the description for post 2.",
             additionalInfo: "Additional info for post 2.",
             image: require('@/assets/kvalitet.png'),
           },
           {
+            index: 1,
             title: "Post 2",
             description: "This is the description for post 2.",
             additionalInfo: "Additional info for post 2.",
             image: require('@/assets/money.png'),
           },
           {
+            index: 1,
             title: "Post 2",
             description: "This is the description for post 2.",
             additionalInfo: "Additional info for post 2.",
             image: require('@/assets/person.jpg'),
           },
           {
+            index: 1,
             title: "Post 2",
             description: "This is the description for post 2.",
             additionalInfo: "Additional info for post 2.",
@@ -128,6 +144,14 @@
   width: 100%;
   max-width: 450px; /* Adjust the max width as needed */
   min-height: 300px; /* Make cards taller */
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Example hover effect */
+  transform: translateY(-2px); /* Slight lift effect */
+  transition: all 0.3s ease;
 }
 
 .card-image {
@@ -148,6 +172,7 @@
   padding: 15px;
   display: flex;
   flex-direction: column;
+  
   justify-content: center;
 }
 
@@ -155,11 +180,13 @@
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 1.2rem;
+  text-decoration: none;
 }
 
 .card-content p {
   margin: 5px 0;
   color: #555;
+  text-decoration: none;
 }
 
 .search-bar {
@@ -203,11 +230,15 @@
 
   .filters {
   display: flex;
-  justify-content: flex-start; /* Aligns filters to the left */
-  align-items: center; /* Vertically centers the dropdowns */
-  gap: 15px; /* Space between dropdowns */
+  justify-content: space-between; /* Space between the filter group and the button */
+  align-items: center; /* Vertically centers the elements */
+  width: 100%; /* Take the full width */
   margin-bottom: 20px; /* Space below filters */
-  width: 100%;
+}
+
+.filter-options {
+  display: flex;
+  gap: 15px; /* Space between the dropdowns */
 }
 
 .dropdown {
@@ -222,10 +253,22 @@
   cursor: pointer;
 }
 
-.dropdown:focus {
-  border-color: #3498db; /* Highlight border on focus */
+.action-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border:lab(from color l a b);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bolder;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
+.action-button:hover {
+  background-color: var(--secondary-color);
+}
 
   </style>
   
