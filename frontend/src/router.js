@@ -8,7 +8,7 @@ const routes = [
     { path: '/', component: HomePage, name: 'Home' },
     { path: '/objave', component: PostsPage, name: 'Posts' },
     { path: '/prijava', component: PrijavaPage, name: 'Prijava' },
-    { path: '/post', name: 'Post', component: PostPage, props: route => ({ post: route.params.post }) },
+    { path: '/post/:id', name: 'Post', component: PostPage, props: true },
     { path: '/dodaj-objavu', name: 'AddPost', component: AddPostPage }, 
 ];
 

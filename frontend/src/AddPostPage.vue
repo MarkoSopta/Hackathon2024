@@ -7,8 +7,8 @@
           <h1>Dodaj Novi Oglas</h1>
           <form @submit.prevent="handleSubmit">
             <div class="input-group">
-              <label for="title">Naslov</label>
-              <input type="text" id="title" v-model="post.title" required />
+              <label for="naslov">Naslov</label>
+              <input type="text" id="naslov" v-model="post.naslov" required />
             </div>
   
             <div class="input-group">
@@ -73,12 +73,12 @@
     data() {
       return {
         post: {
-          title: '',
+          naslov: '',
           description: '',
           price: '',
           type: '',
           category: '',
-          image: null,
+         
         },
       };
     },
@@ -98,6 +98,7 @@
       // Optionally, you can redirect the user or clear the form after submission
       this.$router.push('/'); // Redirect to the home page after submission
     } catch (error) {
+      console.log('Data: ', this.post)
       console.error('Error submitting post:', error);
       // Handle errors (e.g., show an error message to the user)
       alert('Failed to submit post. Please try again.');

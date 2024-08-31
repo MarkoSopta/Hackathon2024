@@ -6,10 +6,13 @@
       <div class="post-info">
         
         
-          <strong>Description:</strong> {{ post.description }}
-          <strong>Additional Info:</strong> {{ post.additionalInfo }}
-          
-        
+          <p v-if="post.name"><strong>Naziv:</strong> {{ post.name }}</p>
+          <p v-if="post.description"><strong>Opis: </strong> {{ post.description }}</p>
+          <p v-if="post.price"><strong>Cijena: </strong> {{ post.price }} KM</p>
+          <p v-if="post.category"><strong>Kategorija: </strong> {{ post.category }}</p>
+          <p v-if="post.type"><strong>Tip: </strong> {{ post.type }}</p>
+         
+
       </div>
       <div class="post-image">
         <img src='@/assets/hero_img.jpg' alt="Post Image" />
@@ -23,36 +26,32 @@
   <script>
   import HeaderComponent from "@/components/HeaderComponent.vue";
   import FooterComponent from "@/components/FooterComponent.vue";
-  
+  import ApiClient from "./ApiClient";
   export default {
     name: "PostPage",
     components: {
       HeaderComponent,
       FooterComponent,
     },
-    props: {
-    
-    post: {
-      type: Object,
-      required: true,
-      default: () => ({
-        title: '',
-        description: '',
-        additionalInfo: '',
-        image: '',
-        attributes: {}
-      })
-    }
-  },
+    props: ['id'],
     data() {
       return {
-      
+        post: {}
       };
     },
     created() {
-      // In a real application, you'd fetch the post data based on the ID here
-      // Example: this.post = fetchPostById(this.id);
+      this.fetchPost()
     },
+    methods: {
+      async fetchPost() {
+      try {
+        const response = await ApiClient.get(`/api/businesses/${this.id}`);
+        this.post = response.data;
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      }
+    }
+    }
   };
   </script>
   
