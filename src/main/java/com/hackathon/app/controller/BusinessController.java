@@ -25,7 +25,10 @@ public class BusinessController {
     public Business createBusiness(@RequestBody Business business) {
         return businessService.saveBusiness(business);
     }
-
+    @GetMapping("/type/{type}")
+    public List<Business> getBusinessesByType(@PathVariable String type) {
+        return businessService.findBusinessesByType(type);
+    }
     @GetMapping
     public List<Business> getAllBusinesses() {
         return businessService.getAllBusinesses();
