@@ -1,6 +1,7 @@
 package com.hackathon.app.controller;
 
 
+import com.hackathon.app.enums.BusinessType;
 import com.hackathon.app.model.Business;
 import com.hackathon.app.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class BusinessController {
         return businessService.saveBusiness(business);
     }
     @GetMapping("/type/{type}")
-    public List<Business> getBusinessesByType(@PathVariable String type) {
+    public List<Business> getBusinessesByType(@PathVariable BusinessType type) {
         return businessService.findBusinessesByType(type);
     }
     @GetMapping
