@@ -1,55 +1,59 @@
 <template>
- 
-    <div id="app">
-      
-      <HeaderComponent />
-      
-      <div class="hero">
-        <div class="hero-text">Istraži što grad nudi!</div>
-          <div class="search-bar">
-            <input type="text" v-model="searchQuery" placeholder="Pretraga..." />
-            <button @click="searchPosts"  class="search-button">
-              <i class="fas fa-search"></i> 
-            </button>
-          </div>
-        <div class="button-container">
-          <button  @click="routePostsPage" class="hero-button">Pregledaj sve objave!</button>
-        </div>
+  <div id="app">
+    <HeaderComponent />
+    
+    <div class="hero">
+      <div class="hero-text">Istraži što grad nudi!</div>
+      <div class="search-bar">
+        <input type="text" v-model="searchQuery" placeholder="Pretraga..." />
+        <button @click="searchPosts" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
-      <RouterView />
-      <FooterComponent />
+      <div class="button-container">
+        <button @click="routePostsPage" class="hero-button">Pregledaj sve objave!</button>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import HeaderComponent from "@/components/HeaderComponent.vue";
-  import FooterComponent from "@/components/FooterComponent.vue";
-  export default {
-    data() {
+    <RouterView />
+    <FooterComponent />
+  </div>
+</template>
+
+<script>
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+
+export default {
+  data() {
     return {
       searchQuery: "",  // Bind the input value to this data property
     };
   },
-    name: "App",
-    components: {
-      HeaderComponent,
-      FooterComponent,
+  name: "App",
+  components: {
+    HeaderComponent,
+    FooterComponent,
+  },
+  methods: {
+    routePostsPage() {
+      this.$router.push({ name: 'Posts' });
     },
-    methods: {
-      routePostsPage() {
-        this.$router.push({ name: 'Posts' });
-      },
-      searchPosts() {
+    searchPosts() {
       if (this.searchQuery.trim()) {
         this.$router.push({ 
           name: 'Posts', 
           query: { search: this.searchQuery } 
+        }).catch(err => {
+          if (err.name !== 'NavigationDuplicated') {
+            console.error(err);
+          }
         });
       }
     },
-    }
-  };
-  </script>
+  }
+};
+</script>
+
   
   <style scoped>
   .hero {

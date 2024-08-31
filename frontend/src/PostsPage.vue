@@ -25,7 +25,6 @@
             <option value="skupo">Cijena-najviša</option>
           </select>
 
-          <!-- Conditionally show the "Osvježi" button -->
           <button v-if="selectedCategory || selectedSort" class="refresh-button" @click="filterPosts">
             Osvježi
           </button>
@@ -77,13 +76,17 @@ export default {
       categories: [],
       selectedCategory: '',
       selectedSort: '',
-      searchQuery: '', 
+      searchQuery: "", 
       loading: true,
       error: null,
     };
   },
   mounted() {
     this.fetchPosts();
+    if (this.$route.query.search) {
+      this.searchQuery = this.$route.query.search;
+      this.filterPosts();
+    }
   },
   methods: {
     async fetchPosts() {
@@ -100,6 +103,8 @@ export default {
           }
         });
         this.categories = Array.from(categoriesSet);
+
+        this.filterPosts();
 
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -133,7 +138,6 @@ export default {
     }
   },
   watch: {
-    // Watch for route changes to update the search query and filter posts
     '$route.query.search'(newSearch) {
       this.searchQuery = newSearch || "";
       this.filterPosts();
@@ -141,6 +145,7 @@ export default {
   }
 };
 </script>
+
 
   
   <style scoped>
