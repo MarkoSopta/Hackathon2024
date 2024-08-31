@@ -63,7 +63,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    background-color: #f5f5f5;
+    background-color: #e0e0e0;
     width: 100%;
     height: 80vh;
     box-sizing: border-box; /* Ensures padding is included in width */
