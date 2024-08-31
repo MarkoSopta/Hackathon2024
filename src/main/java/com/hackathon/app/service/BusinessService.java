@@ -1,6 +1,7 @@
 package com.hackathon.app.service;
 
 
+import com.hackathon.app.enums.BusinessType;
 import com.hackathon.app.model.Business;
 import com.hackathon.app.repository.BusinessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +84,7 @@ public class BusinessService {
 
 
 
-    public List<Business> findBusinessesByType(String type) {
+    public List<Business> findBusinessesByType(BusinessType type) {
         return businessRepository.findByType(type);
     }
 
