@@ -7,8 +7,8 @@
       <div class="hero">
         <div class="hero-text">Istraži što grad nudi!</div>
           <div class="search-bar">
-            <input type="text" placeholder="Pretraga..." />
-            <button class="search-button">
+            <input type="text" v-model="searchQuery" placeholder="Pretraga..." />
+            <button @click="searchPosts"  class="search-button">
               <i class="fas fa-search"></i> 
             </button>
           </div>
@@ -25,6 +25,11 @@
   import HeaderComponent from "@/components/HeaderComponent.vue";
   import FooterComponent from "@/components/FooterComponent.vue";
   export default {
+    data() {
+    return {
+      searchQuery: "",  // Bind the input value to this data property
+    };
+  },
     name: "App",
     components: {
       HeaderComponent,
@@ -33,7 +38,15 @@
     methods: {
       routePostsPage() {
         this.$router.push({ name: 'Posts' });
+      },
+      searchPosts() {
+      if (this.searchQuery.trim()) {
+        this.$router.push({ 
+          name: 'Posts', 
+          query: { search: this.searchQuery } 
+        });
       }
+    },
     }
   };
   </script>

@@ -42,7 +42,7 @@
           class="card"
         >
           <div class="card-content">
-            <h3><strong>Naziv: </strong>{{ post.name }}</h3>
+            <h3><strong>Naziv: </strong>{{ post.naslov }}</h3>
             <p><strong>Opis: </strong>{{ post.description }}</p>
             <p><strong>Kategorija: </strong>{{ post.category }}</p>
             <p><strong>Cijena: </strong>{{ post.price }} KM</p>
@@ -77,7 +77,7 @@ export default {
       categories: [],
       selectedCategory: '',
       selectedSort: '',
-      searchQuery: '', // Search query data property
+      searchQuery: '', 
       loading: true,
       error: null,
     };
@@ -114,7 +114,7 @@ export default {
       // Filter by search query
       if (this.searchQuery) {
         const query = this.searchQuery.toLowerCase();
-        filtered = filtered.filter(post => post.name.toLowerCase().includes(query));
+        filtered = filtered.filter(post => post.naslov.toLowerCase().includes(query));
       }
 
       // Filter by category
@@ -132,6 +132,13 @@ export default {
       this.filteredPosts = filtered;
     }
   },
+  watch: {
+    // Watch for route changes to update the search query and filter posts
+    '$route.query.search'(newSearch) {
+      this.searchQuery = newSearch || "";
+      this.filterPosts();
+    }
+  }
 };
 </script>
 

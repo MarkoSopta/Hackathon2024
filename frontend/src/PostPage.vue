@@ -6,7 +6,7 @@
       <div class="post-info">
         
         
-          <p v-if="post.name"><strong>Naziv:</strong> {{ post.name }}</p>
+          <p v-if="post.naslov"><strong>Naziv:</strong> {{ post.naslov }}</p>
           <p v-if="post.description"><strong>Opis: </strong> {{ post.description }}</p>
           <p v-if="post.price"><strong>Cijena: </strong> {{ post.price }} KM</p>
           <p v-if="post.category"><strong>Kategorija: </strong> {{ post.category }}</p>
@@ -14,7 +14,7 @@
          
 
       </div>
-      <div class="post-image">
+      <div v-if="post.image" class="post-image">
         <img src='@/assets/hero_img.jpg' alt="Post Image" />
       </div>
     </div>
