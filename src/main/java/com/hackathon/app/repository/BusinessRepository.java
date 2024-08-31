@@ -19,6 +19,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     // Example method to find businesses by location
     List<Business> findByLocationContainingIgnoreCase(String location);
+    List<Business> findByType(String type);
 
     // Example method to find businesses by description containing specific keywords
     @Query("SELECT b FROM Business b WHERE b.description LIKE %:keyword%")

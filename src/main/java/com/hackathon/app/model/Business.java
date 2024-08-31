@@ -10,6 +10,7 @@ public class Business {
     private Long id;
     private String name;
     private String category;
+    private String type;
     private String description;
     private String location;
     private Double price;
@@ -20,7 +21,7 @@ public class Business {
     public Business() {
     }
 
-    public Business(Long id, String name, String category, String description, String location,byte[] image, Double price) {
+    public Business(Long id, String name, String category, String description, String type,String location,byte[] image, Double price) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -28,7 +29,16 @@ public class Business {
         this.location = location;
         this.image = image;
         this.price = price;
+        this.type=type;
 
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Double getPrice() {
