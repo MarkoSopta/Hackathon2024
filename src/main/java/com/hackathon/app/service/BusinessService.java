@@ -33,14 +33,11 @@ public class BusinessService {
     public Business updateBusiness(Long id, Business updatedBusiness) {
         Business business = findById(id);
         if (business != null) {
-            if (updatedBusiness.getName() != null) {
-                business.setName(updatedBusiness.getName());
+            if (updatedBusiness.getNaslov() != null) {
+                business.setNaslov(updatedBusiness.getNaslov());
             }
             if (updatedBusiness.getDescription() != null) {
                 business.setDescription(updatedBusiness.getDescription());
-            }
-            if (updatedBusiness.getLocation() != null) {
-                business.setLocation(updatedBusiness.getLocation());
             }
             if (updatedBusiness.getCategory() != null) {
                 business.setCategory(updatedBusiness.getCategory());
@@ -88,13 +85,10 @@ public class BusinessService {
         return businessRepository.findByType(type);
     }
 
-    public List<Business> searchByName(String name) {
-        return businessRepository.findByNameContainingIgnoreCase(name);
+    public List<Business> searchByName(String naslov) {
+        return businessRepository.findByNaslovContainingIgnoreCase(naslov);
     }
 
-    public List<Business> searchByLocation(String location) {
-        return businessRepository.findByLocationContainingIgnoreCase(location);
-    }
 
     public List<Business> searchByDescription(String keyword) {
         return businessRepository.searchByDescriptionContaining(keyword);

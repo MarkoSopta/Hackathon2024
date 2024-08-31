@@ -9,10 +9,9 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String naslov;
     private String category;
     private String description;
-    private String location;
     private Double price;
     @Enumerated(EnumType.STRING)
     private BusinessType type;
@@ -23,12 +22,11 @@ public class Business {
     public Business() {
     }
 
-    public Business(Long id, String name, String category, String description, BusinessType type,String location,byte[] image, Double price) {
+    public Business(Long id, String naslov, String category, String description, BusinessType type, byte[] image, Double price) {
         this.id = id;
-        this.name = name;
+        this.naslov = naslov;
         this.category = category;
         this.description = description;
-        this.location = location;
         this.image = image;
         this.price = price;
         this.type=type;
@@ -67,12 +65,12 @@ public class Business {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNaslov() {
+        return naslov;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNaslov(String naslov) {
+        this.naslov = naslov;
     }
 
     public String getCategory() {
@@ -91,11 +89,4 @@ public class Business {
         this.description = description;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }
