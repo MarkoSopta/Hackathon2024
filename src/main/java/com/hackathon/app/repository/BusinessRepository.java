@@ -1,7 +1,6 @@
 package com.hackathon.app.repository;
 
 
-import com.hackathon.app.enums.BusinessType;
 import com.hackathon.app.model.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +15,8 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     List<Business> findByNaslovContainingIgnoreCase(String naslov);
 
-    
-    List<Business> findByType(BusinessType type);
+
+    List<Business> findByType(String type);
 
 
     @Query("SELECT b FROM Business b WHERE b.description LIKE %:keyword%")

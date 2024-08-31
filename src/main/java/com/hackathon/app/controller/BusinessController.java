@@ -1,7 +1,6 @@
 package com.hackathon.app.controller;
 
 
-import com.hackathon.app.enums.BusinessType;
 import com.hackathon.app.model.Business;
 import com.hackathon.app.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/businesses")
+@CrossOrigin(origins = "http://localhost:8081/")
 public class BusinessController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class BusinessController {
         return businessService.saveBusiness(business);
     }
     @GetMapping("/type/{type}")
-    public List<Business> getBusinessesByType(@PathVariable BusinessType type) {
+    public List<Business> getBusinessesByType(@PathVariable String type) {
         return businessService.findBusinessesByType(type);
     }
     @GetMapping
@@ -39,6 +39,28 @@ public class BusinessController {
     public Business getBusiness(@PathVariable Long id) {
         return businessService.findById(id);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Business>> searchBusinesses(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String description) {
+
+        if (name != null) {
+            return ResponseEntity.ok(businessService.searchByName(name));
+        }  else if (type != null) {
+            return ResponseEntity.ok(businessService.findBusinessesByType(type));
+        } else if (category != null) {
+            return ResponseEntity.ok(businessService.searchByCategory(category));
+        } else if (description != null) {
+            return ResponseEntity.ok(businessService.searchByDescription(description));
+        } else {
+            return ResponseEntity.badRequest().body(null); //
+        }
+    }
+
+
 
     @PutMapping("/{id}")
     public Business updateBusiness(@PathVariable Long id, @RequestBody Business business) {

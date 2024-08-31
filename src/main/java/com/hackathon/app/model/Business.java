@@ -1,6 +1,5 @@
 package com.hackathon.app.model;
 
-import com.hackathon.app.enums.BusinessType;
 import jakarta.persistence.*;
 
 
@@ -13,8 +12,7 @@ public class Business {
     private String category;
     private String description;
     private Double price;
-    @Enumerated(EnumType.STRING)
-    private BusinessType type;
+    private String type;
 
     @Lob
     private byte[] image;
@@ -22,7 +20,7 @@ public class Business {
     public Business() {
     }
 
-    public Business(Long id, String naslov, String category, String description, BusinessType type, byte[] image, Double price) {
+    public Business(Long id, String naslov, String category, String description, String type, byte[] image, Double price) {
         this.id = id;
         this.naslov = naslov;
         this.category = category;
@@ -33,11 +31,11 @@ public class Business {
 
     }
 
-    public BusinessType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(BusinessType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
