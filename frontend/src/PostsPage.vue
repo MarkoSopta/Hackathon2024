@@ -56,7 +56,9 @@
   <script>
   import HeaderComponent from "@/components/HeaderComponent.vue";
   import FooterComponent from "@/components/FooterComponent.vue";
-  
+  import ApiClient from '@/ApiClient.js';
+
+
   export default {
     name: "PostsPage",
     components: {
@@ -64,61 +66,46 @@
       FooterComponent,
     },
     data() {
-      return {
-        posts: [
-          {
-            index: 1,
-            title: "Post 1",
-            description: "This is the description for post 1.",
-            additionalInfo: "Additional info for post 1.",
-            image: require('@/assets/hero_img.jpg'),
-          },
-          {
-            index: 1,
-            title: "Post 2",
-            description: "This is the description for post 2.",
-            additionalInfo: "Additional info for post 2.",
-            image: require('@/assets/logo.png'),
-          },
-          {
-            index: 1,
-            title: "Post 2",
-            description: "This is the description for post 2.",
-            additionalInfo: "Additional info for post 2.",
-            image: require('@/assets/kvalitet.png'),
-          },
-          {
-            index: 1,
-            title: "Post 2",
-            description: "This is the description for post 2.",
-            additionalInfo: "Additional info for post 2.",
-            image: require('@/assets/money.png'),
-          },
-          {
-            index: 1,
-            title: "Post 2",
-            description: "This is the description for post 2.",
-            additionalInfo: "Additional info for post 2.",
-            image: require('@/assets/person.jpg'),
-          },
-          {
-            index: 1,
-            title: "Post 2",
-            description: "This is the description for post 2.",
-            additionalInfo: "Additional info for post 2.",
-            image: require('@/assets/personog.jpg'),
-          },
-          // Add more post objects as needed
-        ],
-      };
-    },
+    return {
+      posts: [],
+      loading: true, // Loading state
+      error: null, // Error state
+    };
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  methods: {
+    async fetchPosts() {
+  try {
+    const response = await ApiClient.get('/api/businesses'); // Fetch data from the API
+    this.posts = response.data;
+
+    // Extract unique categories
+    const categoriesSet = new Set();
+    this.posts.forEach(post => {
+      if (post.category) {
+        categoriesSet.add(post.category);
+      }
+    });
+    this.categories = Array.from(categoriesSet); // Convert Set to Array
+
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    this.error = 'Failed to load posts. Please try again later.';
+  } finally {
+    this.loading = false;
+  }
+}
+  },
   };
   </script>
   
   <style scoped>
   .hero {
+  height: 100vh;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #e0e0e0;
   display: flex;
   flex-direction: column;
   align-items: center;
