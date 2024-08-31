@@ -1,75 +1,85 @@
 <template>
-    <div id="app">
-      <HeaderComponent />
-  
-      <div class="hero">
-        <div class="search-bar">
-          <input type="text" placeholder="Pretraga..." />
-          <button class="search-button">
-            <i class="fas fa-search"></i>
+  <div id="app">
+    <HeaderComponent />
+
+    <div class="hero">
+      <div class="search-bar">
+        <input type="text" placeholder="Pretraga..." v-model="searchQuery" @input="filterPosts" />
+        <button class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <div class="filters">
+        <div class="filter-options">
+          <select class="dropdown" v-model="selectedCategory">
+            <option value="">Kategorija</option>
+            <option v-for="category in categories" :key="category" :value="category">
+              {{ category }}
+            </option>
+          </select>
+
+          <select class="dropdown" v-model="selectedSort">
+            <option value="">Poredaj po</option>
+            <option value="jeftino">Cijena-najniža</option>
+            <option value="skupo">Cijena-najviša</option>
+          </select>
+
+          <!-- Conditionally show the "Osvježi" button -->
+          <button v-if="selectedCategory || selectedSort" class="refresh-button" @click="filterPosts">
+            Osvježi
           </button>
         </div>
-  
-        <div class="filters">
-      <div class="filter-options">
-        <select class="dropdown">
-          <option value="">Kategorija</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-        </select>
 
-        <select class="dropdown">
-          <option value="">Poredaj po</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-        </select>
+        <router-link to="/dodaj-objavu" class="action-button">Dodaj objavu</router-link>
       </div>
-      <router-link to="/dodaj-objavu" class="action-button">Dodaj objavu</router-link>
-    </div>
-       
-  
-        <div class="cards-container">
-          <router-link
-            v-for="(post, index) in posts"
-            :key="index"
-            :to="{ name: 'Post', params: { post } }"
-            class="card"
-            >                     
-            <div class="card-content">
-              <h3>{{ post.title }}</h3>
-              <p>{{ post.description }}</p>
-              <p>{{ post.additionalInfo }}</p>
-            </div>
-            <div v-if="post.image" class="card-image">
-              <img :src="post.image" alt="Post Image" />
-            </div>
-         
+
+      <div class="cards-container">
+        <router-link
+          v-for="(post, index) in filteredPosts"
+          :key="index"
+          :to="{ name: 'Post', params: { id: post.id } }"
+          class="card"
+        >
+          <div class="card-content">
+            <h3><strong>Naziv: </strong>{{ post.name }}</h3>
+            <p><strong>Opis: </strong>{{ post.description }}</p>
+            <p><strong>Kategorija: </strong>{{ post.category }}</p>
+            <p><strong>Cijena: </strong>{{ post.price }} KM</p>
+            <p v-if="post.type == 'Potraznja'" style="color: red">Potražnja</p>
+          </div>
+          <div v-if="post.image" class="card-image">
+            <img :src="post.image" alt="Post Image" />
+          </div>
         </router-link>
-        </div>
-        
       </div>
-  
-      <FooterComponent />
     </div>
-  </template>
-  
-  <script>
-  import HeaderComponent from "@/components/HeaderComponent.vue";
-  import FooterComponent from "@/components/FooterComponent.vue";
-  import ApiClient from '@/ApiClient.js';
 
+    <FooterComponent />
+  </div>
+</template>
 
-  export default {
-    name: "PostsPage",
-    components: {
-      HeaderComponent,
-      FooterComponent,
-    },
-    data() {
+<script>
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+import ApiClient from '@/ApiClient.js';
+
+export default {
+  name: "PostsPage",
+  components: {
+    HeaderComponent,
+    FooterComponent,
+  },
+  data() {
     return {
       posts: [],
-      loading: true, // Loading state
-      error: null, // Error state
+      filteredPosts: [],
+      categories: [],
+      selectedCategory: '',
+      selectedSort: '',
+      searchQuery: '', // Search query data property
+      loading: true,
+      error: null,
     };
   },
   mounted() {
@@ -77,33 +87,58 @@
   },
   methods: {
     async fetchPosts() {
-  try {
-    const response = await ApiClient.get('/api/businesses'); // Fetch data from the API
-    this.posts = response.data;
+      try {
+        const response = await ApiClient.get('/api/businesses');
+        this.posts = response.data;
+        this.filteredPosts = this.posts;
 
-    // Extract unique categories
-    const categoriesSet = new Set();
-    this.posts.forEach(post => {
-      if (post.category) {
-        categoriesSet.add(post.category);
+        // Extract unique categories
+        const categoriesSet = new Set();
+        this.posts.forEach(post => {
+          if (post.category) {
+            categoriesSet.add(post.category);
+          }
+        });
+        this.categories = Array.from(categoriesSet);
+
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        this.error = 'Failed to load posts. Please try again later.';
+      } finally {
+        this.loading = false;
       }
-    });
-    this.categories = Array.from(categoriesSet); // Convert Set to Array
+    },
+    filterPosts() {
+      let filtered = this.posts;
 
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    this.error = 'Failed to load posts. Please try again later.';
-  } finally {
-    this.loading = false;
-  }
-}
+      // Filter by search query
+      if (this.searchQuery) {
+        const query = this.searchQuery.toLowerCase();
+        filtered = filtered.filter(post => post.name.toLowerCase().includes(query));
+      }
+
+      // Filter by category
+      if (this.selectedCategory) {
+        filtered = filtered.filter(post => post.category === this.selectedCategory);
+      }
+
+      // Sort by price
+      if (this.selectedSort === 'jeftino') {
+        filtered = filtered.sort((a, b) => a.price - b.price);
+      } else if (this.selectedSort === 'skupo') {
+        filtered = filtered.sort((a, b) => b.price - a.price);
+      }
+
+      this.filteredPosts = filtered;
+    }
   },
-  };
-  </script>
+};
+</script>
+
   
   <style scoped>
   .hero {
-  height: 100vh;
+  min-height: 100vh;
   padding: 20px;
   background-color: #e0e0e0;
   display: flex;

@@ -1,6 +1,6 @@
 <template>
     
-    <Header class="header">
+    <header class="header">
       <div class="logo">
        <p>LOGO OVDJE</p>
       </div>
@@ -10,7 +10,7 @@
         <button @click="routePrijavaPage" class="nav-button">Prijava</button>
         <button class="nav-button">O nama</button>
       </nav>
-    </Header>
+    </header>
   </template>
   
   <script>
